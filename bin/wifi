@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.dirname(__FILE__) + '/../lib/wifi')
+wifi = WiFiConnectionStatus.new
+
+loop do
+  wifi.check_connection
+  sleep(5)
+end
