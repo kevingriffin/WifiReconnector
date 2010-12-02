@@ -7,9 +7,9 @@ class WiFiConnectionStatus
   end
 
   def reconnect
-    %x[osascript airport_off.scpt]
+    %x[osascript #{File.dirname(__FILE__)}/wifi/airport_off.scpt]
     sleep(3)      
-    %x[osascript airport_on.scpt] 
+    %x[osascript #{File.dirname(__FILE__)}/wifi/airport_on.scpt] 
   end
 
   def check_connection
@@ -23,10 +23,4 @@ class WiFiConnectionStatus
       @online = true
     end
   end
-end
-
-wifi = WiFiConnectionStatus.new
-loop do
-  wifi.check_connection
-  sleep(5)
 end
