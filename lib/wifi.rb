@@ -12,9 +12,9 @@ class WiFiConnectionStatus
   end
   
   def reconnect
-    %x[osascript #{File.dirname(__FILE__)}/wifi/airport_off.scpt]
-    sleep(3)      
-    %x[osascript #{File.dirname(__FILE__)}/wifi/airport_on.scpt] 
+    `/usr/sbin/networksetup -setairportpower en1 off`
+    sleep(2)      
+    `/usr/sbin/networksetup -setairportpower en1 on`
   end
 
   def snark
