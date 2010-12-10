@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '/../lib/wifi'
+require_relative '../lib/wifi'
 wifi = WiFiConnectionStatus.new
 
 loop do
