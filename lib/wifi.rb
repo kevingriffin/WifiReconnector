@@ -18,14 +18,15 @@ class WiFiConnectionStatus
   end
 
   def snark
-    @online ? @snarks.shuffle.first.strip + "\n" : ''
+    @snarks.shuffle.first.strip
   end
   
   def disconnection_count
-    @online ? "\nDisconnection count: #{@count}" : ''
+    "Disconnection count: #{@count}"
   end
   
   def growl( arguments )
+    body = snark + (arguments[:body] || '') + disconnection_count if
     @growler.notify arguments[:name] , arguments[:title] || '' , snark + (arguments[:body] || '') + disconnection_count
   end
   
