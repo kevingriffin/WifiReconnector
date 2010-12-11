@@ -6,15 +6,15 @@ class WiFiConnectionStatus
     @growler  = Growl.new 'localhost', 'wifi', ['offline', 'online']
     @count    = 0
 
-    File.open "snarks.txt" do |file|
+    File.open "#{File.dirname(__FILE__)}/../bin/snarks.txt" do |file|
       @snarks = file.readlines 
     end
   end
   
   def reconnect
-    `/usr/sbin/networksetup -setairportpower en1 off`
+    `/usr/sbin/networksetup -setairportpower en0 off`
     sleep(2)      
-    `/usr/sbin/networksetup -setairportpower en1 on`
+    `/usr/sbin/networksetup -setairportpower en0 on`
   end
 
   def snark
@@ -26,15 +26,17 @@ class WiFiConnectionStatus
   end
   
   def growl( arguments )
-    body = snark + (arguments[:body] || '') + disconnection_count if
-    @growler.notify arguments[:name] , arguments[:title] || '' , snark + (arguments[:body] || '') + disconnection_count
+    title = arguments.fetch :title , ""
+    body  = arguments.fetch :body  , ""
+    body = "#{snark}\n#{body}#{"\n" unless body.empty?}#{disconnection_count}" if @online
+    @growler.notify arguments[:name] , title , body
   end
   
   def check_connection
     result = %x(ping -W2 -c3 google.com 2>&1)
     if result["100.0% packet loss"] || result["Unknown"]
       @count += 1 if @online
-      growl( :name => 'offline', :title => 'The internet is gone again', :body => "You've lost your Wifi connection again." ) if @online
+      growl( :name => 'offline', :title => 'The internet is gone again', :body => "You've lost your Wifi connection again" ) if @online
       reconnect
       @online = false
     else
