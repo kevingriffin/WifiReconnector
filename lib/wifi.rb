@@ -41,4 +41,9 @@ class WiFiConnectionStatus
       @online = true
     end
   end
+  
+def detect_interface
+  
+end
+  
 end
