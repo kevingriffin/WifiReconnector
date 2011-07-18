@@ -2,9 +2,10 @@ require 'ruby-growl'
 
 class WiFiConnectionStatus
   def initialize
-    @online   = true
-    @growler  = Growl.new 'localhost', 'wifi', ['offline', 'online']
-    @count    = 0
+    @online    = true
+    @growler   = Growl.new 'localhost', 'wifi', ['offline', 'online']
+    @count     = 0
+    @interface = detect_interface
 
     File.open "snarks.txt" do |file|
       @snarks = file.readlines 
@@ -12,9 +13,9 @@ class WiFiConnectionStatus
   end
   
   def reconnect
-    `/usr/sbin/networksetup -setairportpower en1 off`
+    `/usr/sbin/networksetup -setairportpower #{@interface} off`
     sleep(2)      
-    `/usr/sbin/networksetup -setairportpower en1 on`
+    `/usr/sbin/networksetup -setairportpower #{@interface} on`
   end
 
   def snark
@@ -42,8 +43,18 @@ class WiFiConnectionStatus
     end
   end
   
-def detect_interface
-  
-end
-  
+  def detect_interface
+    active_interface = ""
+    
+    `ifconfig -lu`.split.each do |interface|
+      status = `ifconfig #{interface}`
+      
+      unless status.scan(/status: active$/).empty?
+        active_interface = interface
+        break
+      end
+      
+    end
+    active_interface
+  end
 end
