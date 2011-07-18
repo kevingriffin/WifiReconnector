@@ -1,6 +1,12 @@
 WiFi Reconnector
 =================
 
+
+Version 1.1
+----------
+Added interface detection
+
+
 What is this?
 -----------------
 
