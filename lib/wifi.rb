@@ -7,7 +7,7 @@ class WiFiConnectionStatus
     @count     = 0
     @interface = detect_interface
 
-    File.open "snarks.txt" do |file|
+    File.open(File.dirname(__FILE__) + '/snarks.txt') do |file|
       @snarks = file.readlines 
     end
   end
@@ -45,16 +45,19 @@ class WiFiConnectionStatus
   
   def detect_interface
     active_interface = ""
-    
     `ifconfig -lu`.split.each do |interface|
       status = `ifconfig #{interface}`
-      
       unless status.scan(/status: active$/).empty?
         active_interface = interface
         break
       end
-      
     end
-    active_interface
+    
+    if active_interface.empty?
+      puts "WiFi interface not found. Make sure your WiFi is turned on."
+      exit
+    else
+      active_interface
+    end
   end
 end
