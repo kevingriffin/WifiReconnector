@@ -34,7 +34,5 @@ Credits
 ----------------
 
     ruby-growl -- Library used for Growl               http://segment7.net/projects/ruby/growl/
-    
-    StefanK    -- Inspiration for the AppleScripts     http://macscripter.net/viewtopic.php?id=29003
 
 
