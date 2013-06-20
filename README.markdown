@@ -1,6 +1,7 @@
 WiFi Reconnector
 =================
 
+Now demoing!
 
 Version 1.1
 ----------
